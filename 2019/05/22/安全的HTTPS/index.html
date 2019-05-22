@@ -6,18 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="Amour.me">
-  <title>Archives: 2019 | Amour的博客</title>
+  <title>安全的HTTPS | Amour的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="热爱技术，目前方向为后端C/C++研发。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Amour的博客">
-<meta property="og:url" content="Amour.me/archives/2019/index.html">
+  <meta name="description" content="我们知道HTTP是明文传输的，下面先说说他的缺点 1.明文传输，内容很可能被窃听。 2.不验证对方的身份，可能遭遇伪装。 3.无法验证报文的完整性，内容可能被篡改。 正因为HTTP有这样的缺点，在我们传输一些敏感信息时，比如身份证号，银行卡号，身份证号，各种密码，我们无法保证我们信息的安全性，所以衍生了HTTPS。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安全的HTTPS">
+<meta property="og:url" content="Amour.me/2019/05/22/安全的HTTPS/index.html">
 <meta property="og:site_name" content="Amour的博客">
-<meta property="og:description" content="热爱技术，目前方向为后端C/C++研发。">
+<meta property="og:description" content="我们知道HTTP是明文传输的，下面先说说他的缺点 1.明文传输，内容很可能被窃听。 2.不验证对方的身份，可能遭遇伪装。 3.无法验证报文的完整性，内容可能被篡改。 正因为HTTP有这样的缺点，在我们传输一些敏感信息时，比如身份证号，银行卡号，身份证号，各种密码，我们无法保证我们信息的安全性，所以衍生了HTTPS。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="/2019/05/22/安全的HTTPS/x.jpg">
+<meta property="og:updated_time" content="2019-05-22T09:10:12.957Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Amour的博客">
-<meta name="twitter:description" content="热爱技术，目前方向为后端C/C++研发。">
+<meta name="twitter:title" content="安全的HTTPS">
+<meta name="twitter:description" content="我们知道HTTP是明文传输的，下面先说说他的缺点 1.明文传输，内容很可能被窃听。 2.不验证对方的身份，可能遭遇伪装。 3.无法验证报文的完整性，内容可能被篡改。 正因为HTTP有这样的缺点，在我们传输一些敏感信息时，比如身份证号，银行卡号，身份证号，各种密码，我们无法保证我们信息的安全性，所以衍生了HTTPS。">
+<meta name="twitter:image" content="/2019/05/22/安全的HTTPS/x.jpg">
   
   
     <link rel="icon" href="/favicon.png">
@@ -149,103 +152,240 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-安全的HTTPS" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      安全的HTTPS
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/22/安全的HTTPS/" class="archive-article-date">
+
+        
+        <a href="/2019/05/22/安全的HTTPS/" class="archive-article-date">
   	<time datetime="2019-05-22T07:42:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-22</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/22/安全的HTTPS/">安全的HTTPS</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="我们知道HTTP是明文传输的，下面先说说他的缺点"><a href="#我们知道HTTP是明文传输的，下面先说说他的缺点" class="headerlink" title="我们知道HTTP是明文传输的，下面先说说他的缺点"></a>我们知道HTTP是明文传输的，下面先说说他的缺点</h4><p> 1.明文传输，内容很可能被窃听。<br> 2.不验证对方的身份，可能遭遇伪装。<br> 3.无法验证报文的完整性，内容可能被篡改。</p>
+<p>正因为HTTP有这样的缺点，在我们传输一些敏感信息时，比如身份证号，银行卡号，身份证号，各种密码，我们无法保证我们信息的安全性，所以衍生了HTTPS。<a id="more"></a><br><br><br></p>
+<h4 id="HTTPS-HTTP-认证-加密-保证数据完整性"><a href="#HTTPS-HTTP-认证-加密-保证数据完整性" class="headerlink" title="HTTPS = HTTP + 认证 + 加密 + 保证数据完整性"></a>HTTPS = HTTP + 认证 + 加密 + 保证数据完整性</h4><h5 id="那么他是如何工作的呢？"><a href="#那么他是如何工作的呢？" class="headerlink" title="那么他是如何工作的呢？"></a>那么他是如何工作的呢？</h5><p>HTTP是基于TCP的，HTTPS就是在HTTP的基础上增加了一层安全套接层也就是SSL。</p>
+<p>宏观的去看分为三步<br>1.客户端和服务端建立TCP连接。<br>2.客户端验证服务器的身份。<br>3.客户端发给服务端一个主密钥。</p>
+<p>下面我们详细去了解一下他们的过程并进行解析。</p>
+<h4 id="完整的HTTPS的过程"><a href="#完整的HTTPS的过程" class="headerlink" title="完整的HTTPS的过程"></a>完整的HTTPS的过程</h4><p>1.客户发送他支持的密码算法的列表和一个客户端不重数。</p>
+<ul>
+<li>因为SSL不强制客户端和服务端使用某一种加密算法或者公钥，只要他们选取一致就行，所以他会发送他所支持的列表，由服务端选择。</li>
+</ul>
+<ul>
+<li>客户端不重数是为了防止被别人嗅探到报文，然后伪装成客户端和服务器建立连接。</li>
+</ul>
+<p>2.服务端选择一个对称算法，一个公钥算法，一个MAC算法。然后将自己的证书和一个服务端不重数返回给客户端。</p>
+<ul>
+<li><p>MAC算法是因为为了验证报文的完整性，SSL将数据流分割成记录，然后对每个记录附加一个MAC用于完整性的检查，然后将MAC加密，所以MAC的存在是为了验证报文的完整性。</p>
+</li>
+<li><p>MAC是由当前数据的MAC密钥和当前序号的散列组成，因为有可能中间人将我们的报文顺序颠倒，所以SSL引进了一个从0开始的序号记录数据的顺序</p>
+</li>
+<li><p>证书都是都过注册认证的，保证安全。</p>
+</li>
+</ul>
+<p>3.客户端验证该证书，提取服务端的公钥，生成一个主密钥，并用服务端的公钥加密主密钥后发送给客户端。</p>
+<ul>
+<li>因为这时候还是明文传输，内容有可能别窃听所以用服务端的公钥对主密钥进行加密，防止被窃听。*</li>
+</ul>
+<p>4.服务端用自己的私钥导出主密钥，这时服务端和客户端都拿到了主密钥，此时，他们之间发送的所有报文均被加密和鉴别。</p>
+<p>5.客户端发送所有报文的MAC<br>6.服务端发送所有报文的MAC</p>
+<h5 id="前四步的完成就已经可以保证数据安全，为什么还要有第五步和第六步呢？"><a href="#前四步的完成就已经可以保证数据安全，为什么还要有第五步和第六步呢？" class="headerlink" title="前四步的完成就已经可以保证数据安全，为什么还要有第五步和第六步呢？"></a>前四步的完成就已经可以保证数据安全，为什么还要有第五步和第六步呢？</h5><p>下面我们分析这样一个情况：<br>  第一步中客户端发送自己支持的密码算法，此时是明文传输没有加密，那么报文就有可能被篡改，假如报文被中间人截获，他将客户端支持的密码算法中加密性强的复杂的删掉，留下一些相对容易破解的。</p>
+<ul>
+<li>最后两步就是为了防止这样的篡改，所以最后他们会验证整个过程中的报文完整性，一旦发现不一致，服务端会立即终止连接。</li>
+</ul>
+<h4 id="SSL会话的中止"><a href="#SSL会话的中止" class="headerlink" title="SSL会话的中止"></a>SSL会话的中止</h4><p>简单的终止方法就是终止底层的TCP连接，客户端向服务端发送一个FIN报文，但这种设计却有很大的问题，容易受到截断攻击。</p>
+<p>中间人再次介入SSL会话并用FIN报文过早的结束掉会话，服务端会认为收到了所有数据，但其实并没有，针对这种情况解决的方案是：</p>
+<ul>
+<li>在类型字段中表明此条记录是否用于终止SSL会话。</li>
+</ul>
+<p>用这样一个字段，如果服务端收到中间人的FIN，那么他就能清楚的分辨出是否是真正的客户端的断开请求。</p>
+<p>这就是HTTPS整个的一个过程，他很好的解决了我们HTTP明文传输的缺点。使用很广泛。HTTPS他也有自己的缺点。</p>
+<h4 id="HTTPS的缺点"><a href="#HTTPS的缺点" class="headerlink" title="HTTPS的缺点"></a>HTTPS的缺点</h4><p>1.通信慢，处理速度慢，因为加密解密的过程，大量消耗了CPU和内存的资，与HTTP相比网络负载可能会慢2-100倍左右，而且没有根本的解决方案，只能通过SSL加速器进行稍微的优化，而且SSL加速器针对SSL使用</p>
+<p>2.证书并不是免费的，大概一年需要600元。</p>
+<h4 id="这就是HTTPS的过程，欢迎大家对错误的地方进行指针和补充。"><a href="#这就是HTTPS的过程，欢迎大家对错误的地方进行指针和补充。" class="headerlink" title="这就是HTTPS的过程，欢迎大家对错误的地方进行指针和补充。"></a>这就是HTTPS的过程，欢迎大家对错误的地方进行指针和补充。</h4><img src="/2019/05/22/安全的HTTPS/x.jpg">
+      
 
-        <div class="article-info info-on-right">
-          
-          
-
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/zfb.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wx.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http:Amour.me/2019/05/22/安全的HTTPS/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/21/我的第一篇博客/" class="archive-article-date">
-  	<time datetime="2019-05-21T14:47:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-21</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/05/21/我的第一篇博客/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">我的第一篇博客</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/21/我的第一篇博客/">我的第一篇博客</a>
-    </h1>
+          <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+<script src="https://jjeejj.github.io/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "Amour.me/2019/05/22/安全的HTTPS/",
+  owner: 'Amour132',
+  repo: 'Amour132.github.io',
+  oauth: {
+    client_id: '6ea4c527602f839f65c1',
+    client_secret: '1e4cf60a17a756cdca73b66e246fcd6564e6518c',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+      
+
+  
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/20/hello-world/" class="archive-article-date">
-  	<time datetime="2019-05-20T10:08:08.359Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/20/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+<script src="https://jjeejj.github.io/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "Amour.me/2019/05/22/安全的HTTPS/",
+  owner: 'Amour132',
+  repo: 'Amour132.github.io',
+  oauth: {
+    client_id: '6ea4c527602f839f65c1',
+    client_secret: '1e4cf60a17a756cdca73b66e246fcd6564e6518c',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
@@ -268,8 +408,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
