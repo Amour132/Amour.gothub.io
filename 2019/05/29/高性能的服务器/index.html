@@ -6,18 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="Amour.me">
-  <title>Amour的博客</title>
+  <title>高性能服务器总结 | Amour的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="热爱技术，目前方向为后端C/C++研发。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Amour的博客">
-<meta property="og:url" content="Amour.me/index.html">
+  <meta name="description" content="平时也写过不少服务器，性能对服务至关重要，但很我少深入去考虑如何提升服务器的性能。所以针对提高服务器的性能来写一篇总结。 1.多线程还是多进程？我们的服务器是选择多线程还是多进程呢？这个是根据场景选择，因为不管多线程还是多进程都不是完美的，都有各自的缺点。 多进程的优缺点优点：  1.多进程相比多线程更稳定，程序健壮性好。 2.进程之间不会互相影响，隔离性好。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能服务器总结">
+<meta property="og:url" content="Amour.me/2019/05/29/高性能的服务器/index.html">
 <meta property="og:site_name" content="Amour的博客">
-<meta property="og:description" content="热爱技术，目前方向为后端C/C++研发。">
+<meta property="og:description" content="平时也写过不少服务器，性能对服务至关重要，但很我少深入去考虑如何提升服务器的性能。所以针对提高服务器的性能来写一篇总结。 1.多线程还是多进程？我们的服务器是选择多线程还是多进程呢？这个是根据场景选择，因为不管多线程还是多进程都不是完美的，都有各自的缺点。 多进程的优缺点优点：  1.多进程相比多线程更稳定，程序健壮性好。 2.进程之间不会互相影响，隔离性好。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="/2019/05/29/高性能的服务器/x.png">
+<meta property="og:image" content="/2019/05/29/高性能的服务器/y.png">
+<meta property="og:image" content="/2019/05/29/高性能的服务器/z.jpg">
+<meta property="og:image" content="/2019/05/29/高性能的服务器/s.jpg">
+<meta property="og:image" content="/2019/05/29/高性能的服务器/xx.jpg">
+<meta property="og:updated_time" content="2019-05-29T15:43:33.325Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Amour的博客">
-<meta name="twitter:description" content="热爱技术，目前方向为后端C/C++研发。">
+<meta name="twitter:title" content="高性能服务器总结">
+<meta name="twitter:description" content="平时也写过不少服务器，性能对服务至关重要，但很我少深入去考虑如何提升服务器的性能。所以针对提高服务器的性能来写一篇总结。 1.多线程还是多进程？我们的服务器是选择多线程还是多进程呢？这个是根据场景选择，因为不管多线程还是多进程都不是完美的，都有各自的缺点。 多进程的优缺点优点：  1.多进程相比多线程更稳定，程序健壮性好。 2.进程之间不会互相影响，隔离性好。">
+<meta name="twitter:image" content="/2019/05/29/高性能的服务器/x.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -149,16 +156,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-高性能的服务器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-高性能的服务器" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/29/高性能的服务器/">高性能服务器总结</a>
+    <h1 class="article-title" itemprop="name">
+      高性能服务器总结
     </h1>
   
 
@@ -176,12 +181,87 @@
 <p>多进程的优缺点<br><strong>优点：</strong></p>
 <ul>
 <li>1.多进程相比多线程更稳定，程序健壮性好。</li>
-<li>2.进程之间不会互相影响，隔离性好。</li></ul>
-        
-          <a class="article-more-a" href="/2019/05/29/高性能的服务器/#more">more >></a>
-        
+<li>2.进程之间不会互相影响，隔离性好。<a id="more"></a>
+<strong>缺点：</strong><ul>
+<li>1.链接来时创建子进程导致服务器响应时间慢。</li>
+<li>2.进程占的资源较多，导致服务的客户有明显的上限。</li>
+<li>3.客户数变多会导致进程越来越多，导致每个进程调度周期变长。</li>
+<li>4.客户数一旦到达上限，再次链接就会失败。</li>
+</ul>
+</li>
+</ul>
+<p>多进程虽然缺点很明显，但他也有着很明显的优势，如果对程序的健壮性和稳定性要求很高，并且并发量并不是很大，那么多进程就是我们比较好的一个选择。</p>
+<p>多线程的优缺点：<br><strong>优点：</strong></p>
+<ul>
+<li>1.相比进程，线程更加轻量化，所以可服务的客户数量相对来说比较多，但也会有一个上限。</li>
+<li>2.线程的创建和销毁也会比进程的效率更高。</li>
+<li>3.线程的切换速度会比进程更快。</li>
+<li>4.线程能充分利用处理器的可并行数量。</li>
+<li>6.计算密集型应用：将计算分解到多个线程中实现。</li>
+<li><p>7.I/0密集型应用：为了提高性能，将I/O操作重叠，线程可以同时等待不同的I/O操作。</p>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>1.程序稳定性不如进程，线程之间会互相影响，一个线程挂掉可能会影响到其他线程。</li>
+<li>2.线程控制相比进程控制更加复杂。</li>
+<li>3.线程缺乏访问控制，因为线程共享资源所以要考虑线程安全的问题。</li>
+</ul>
+</li>
+</ul>
+<p>多线程的承载力会比多进程更加强，所以如果要服务的客户很多，我们应该考虑多线程。如果频繁使用处理器或者I//O，也应该优先去选择多线程。<br><br><br></p>
+<h4 id="2-进一步提高性能"><a href="#2-进一步提高性能" class="headerlink" title="2.进一步提高性能"></a>2.进一步提高性能</h4><p><strong>1.池化技术</strong><br>池化技术可以帮我们很好的提高我们的性能。<br>池就是一组资源的集合，就是我们预先创建好资源，当请求来的时候直接去分配而不用动态的去创建。</p>
+<p>线程池，我们预先创建好一批线程。一旦有请求就去让一个线程去处理，可以避免我们频繁的创建销毁线程。线程池搭配我们的任务队列来使用还可以解决请求失败的问题，假如我们的请求数量太多，服务器资源不够，那么则会请求失败，而任务队列则会把任务缓存起来，一旦有空闲的线程那么就会来处理队列里的任务。</p>
+<p>那么线程的数量是多少呢？<br>线程池线程的数量最好参考CPU的核数去创建，最大程度利用资源。<br>如果创建的过多，通常会导致资源的浪费，因为任意时刻的客户数量都可能远远没有达到服务器能支持的最大客户数。</p>
+<p><strong>2.数据复制</strong><br>避免不必要的数据复制也是提高性能的方法。尤其是数据复制在用户和内核之间要进行切换的时候。不必要的复制会大大降低我们的效率。<br>比如ftp服务器，服务器只会检测文件存不存在，以及客户是否与读取的权限。这样的话服务端就不用将他拷贝至缓冲区然后调用send发送，可以直接用零拷贝的sendfile发送。</p>
+<p>用户的数据复制也要尽量避免，比如两个进程要传输大量的数据，这时候我们要优先选择共享内存，而不是管道或者消息队列。<br><img src="/2019/05/29/高性能的服务器/x.png" title="共享内存"><br><img src="/2019/05/29/高性能的服务器/y.png" title="管道/消息队列"></p>
+<p>消息队列和管道要拷贝四次<br>从图中，我们可以看出，使用管道(FIFO/消息队列)从一个文件传输信息到另外一个文件需要复制4次。<br>一是，服务器端将信息从相应的文件复制到server临时缓冲区中。<br>二是，从临时缓冲区中复制到管道（FIFO/消息队列）。<br>三是，客户端将信息从管道（FIFO/消息队列）复制到client端的缓冲区<br>四是，从client临时缓冲区将信息复制到输出文件中。</p>
+<p><strong>3.锁</strong></p>
+<p>多线程我们往往要考虑线程安全的问题，要对我们的共享资源加锁保护，但锁的粒度是很大的。会影响我们的性能。所以我们应当尽量避免使用锁。如果必须要用到锁我们也应该去优化，用原子操作代替或者去尽可能减小锁的粒度以此来提高我们的效率。</p>
+<p>提高我得服务器性能主要就是在这三个方面进行优化。</p>
+<p>除过这些小这些方面，我们还可以从服务器大的框架和事件处理方面去优化我们的性能。<br><br><br></p>
+<h4 id="3-两种高效的事件处理模式"><a href="#3-两种高效的事件处理模式" class="headerlink" title="3.两种高效的事件处理模式"></a>3.两种高效的事件处理模式</h4><p>我们服务器通常需要处理I/O事件和信号或者是定时事件。<br>说到处理事件就不得不提2种高效的模式了。</p>
+<p><strong>1.Reactor模式</strong><br>Reactor模式就是定义一个主线程，主线程负责文件描述符是否有事件发生，如果有则通知工作线程，除此之外主线程不做其他工作，读写数据，接受新链接则都由工作线程完成。</p>
+<p>这个模式和解决多进程下epoll的惊群问题的方法很类似，唯一的区别就是解决epoll惊群问题是用一个主进程去监听并且接受连接，业务由其他工作进程去完成，而Reactor模式下的主进程只负责监听。</p>
+<p>Reactor的工作流程<br>使用同步I/O模型的工作流程：<br>1.主线程往epoll内核事件中注册socket上的读就绪事件<br>2.主线程调用epoll_wait等待读事件发生<br>3.当有事件可读，epoll_wait通知主线程，主线程将socket可读事件放入请求队列<br>4.唤醒一个工作线程，读取数据，处理客户请求然后往epoll内核时间表中注册写事件<br>5.主线程等待写事件发生<br>6.当socket可写，epoll_wait通知主线程，主线程将可写事件放入请求队列<br>7.唤醒一个工作线程，往socket写入并且处理客户请求的结果。</p>
+<p>利用了epoll+线程池<br><img src="/2019/05/29/高性能的服务器/z.jpg"></p>
+<p><strong>2.Proactor模式</strong><br>Proactor模式是将所有的I/O操作交给主线程和内核处理，工作线程只是负责业务逻辑</p>
+<p>使用同步I/O模型模拟实现Proactor的流程：<br>1.主线程往epoll内核事件中注册socket上的读就绪事件<br>2.主线程调用epoll_wait等待读事件发生<br>3.当sokcet有数据可读，epoll_wait通知主线程，主线程从socket循环读取数据，当读到的数据封装成一个请求对象插入请求队列。<br>4.唤醒一个工作线程，读取数据，处理客户请求然后往epoll内核时间表中注册写事件<br>5.主线程等待写事件发生<br>6.当socket可写，epoll_wait通知主线程，主线程将可写事件放入请求队列<br><img src="/2019/05/29/高性能的服务器/s.jpg"></p>
+<p>Proactor和Reactor的不同在于，异步情况下(Proactor)，当回调注册的处理函数时，表示IO操作已经完成；同步情况下(Reactor)，回调注册的处理函数时，表示IO设备可以进行某个操作(can read or can write)，注册的处理函数这个时候开始提交操作。</p>
+<p>高效并发模式的优势在哪呢？<br>1.响应快，不会为了单个同步事件阻塞。<br>2.避免了多线程/多进程切换的开销。<br>3.可扩展性，可以增加Reactor实例个数来充分利用CPU资源。<br>4.与事件处理逻辑无关，可复用性很高。</p>
+<p>以后再也不用为我们的服务器性能头疼了hhhhh。<br><img src="/2019/05/29/高性能的服务器/xx.jpg"></p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/zfb.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wx.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -190,16 +270,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/29/高性能的服务器/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http:Amour.me/2019/05/29/高性能的服务器/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2019/05/22/安全的HTTPS/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">安全的HTTPS</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -221,204 +360,47 @@
 
 
   
-    <article id="post-安全的HTTPS" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/22/安全的HTTPS/">安全的HTTPS</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/22/安全的HTTPS/" class="archive-article-date">
-  	<time datetime="2019-05-22T07:42:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
+          <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+<script src="https://jjeejj.github.io/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "Amour.me/2019/05/29/高性能的服务器/",
+  owner: 'Amour132',
+  repo: 'Amour132.github.io',
+  oauth: {
+    client_id: '6ea4c527602f839f65c1',
+    client_secret: '1e4cf60a17a756cdca73b66e246fcd6564e6518c',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
       
-        <h4 id="我们知道HTTP是明文传输的，下面先说说他的缺点"><a href="#我们知道HTTP是明文传输的，下面先说说他的缺点" class="headerlink" title="我们知道HTTP是明文传输的，下面先说说他的缺点"></a>我们知道HTTP是明文传输的，下面先说说他的缺点</h4><p> 1.明文传输，内容很可能被窃听。<br> 2.不验证对方的身份，可能遭遇伪装。<br> 3.无法验证报文的完整性，内容可能被篡改。</p>
-<p>正因为HTTP有这样的缺点，在我们传输一些敏感信息时，比如身份证号，银行卡号，身份证号，各种密码，我们无法保证我们信息的安全性，所以衍生了HTTPS。</p>
-        
-          <a class="article-more-a" href="/2019/05/22/安全的HTTPS/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/22/安全的HTTPS/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
 
   
-    <article id="post-我的第一篇博客" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/21/我的第一篇博客/">我的第一篇博客</a>
-    </h1>
   
 
-        
-        <a href="/2019/05/21/我的第一篇博客/" class="archive-article-date">
-  	<time datetime="2019-05-21T14:47:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="新的开始"><a href="#新的开始" class="headerlink" title="新的开始"></a>新的开始</h1><p>  作为一个合格的极客，应该有一个自己的技术博客。<br>  经过了两天的摸索，终于将我的个人博客搭建完成。<br>  我会坚持每周一篇技术博客，也会有学习的笔记，记录我学习的过程。<br>  希望大家多多支持，一起学习，一起进步。<br>  如果有问题可以在评论留言，我看到都会一 一回复。</p>
-        
-          <a class="article-more-a" href="/2019/05/21/我的第一篇博客/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/21/我的第一篇博客/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/20/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2019/05/20/hello-world/" class="archive-article-date">
-  	<time datetime="2019-05-20T10:08:08.359Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-        
-          <a class="article-more-a" href="/2019/05/20/hello-world/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/20/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+  
 
   
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+<script src="https://jjeejj.github.io/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "Amour.me/2019/05/29/高性能的服务器/",
+  owner: 'Amour132',
+  repo: 'Amour132.github.io',
+  oauth: {
+    client_id: '6ea4c527602f839f65c1',
+    client_secret: '1e4cf60a17a756cdca73b66e246fcd6564e6518c',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
   
 
 
@@ -441,8 +423,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
